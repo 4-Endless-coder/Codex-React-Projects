@@ -6,9 +6,12 @@
 }
 * {
   margin: 0;
+  box-sizing: border-box;
 }
 
-body {
+html, body {
+  width: 100%; /* Explicitly set full width */
+  overflow-x: hidden; /* Hide any remaining horizontal scroll */
   font-family: "Poppins", sans-serif;
 }
 
@@ -19,10 +22,13 @@ button {
   height: 32px;
   color: white;
   font-weight: 500;
+  cursor: pointer;
+  text-align: center;
 }
 .container {
   margin: 0 auto;
   max-width: 1280px;
+  padding: 0 20px;
 }
 nav {
   display: flex;
@@ -41,11 +47,19 @@ nav ul {
   display: flex;
   align-items: center;
   height: calc(100vh - 72px);
+  gap: 40px;
 }
 .hero-content {
   display: flex;
   flex-direction: column;
   gap: 36px;
+  flex: 0 0 40%;
+}
+.hero-image {
+  flex: 0 0 60%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 .hero h1 {
   font-weight: 800;
@@ -56,6 +70,10 @@ nav ul {
   font-weight: 600;
   color: var(--gray);
   max-width: 400px;
+}
+.hero-image img {
+  max-width: 100%; /* Ensure image doesn't exceed its 60% container */
+  height: auto;
 }
 
 .hero-btn {
@@ -68,7 +86,7 @@ nav ul {
 .secondary-btn {
   background: transparent;
   color: var(--gray);
-  border: 1px solid gray;
+  border: 1px solid var(--gray);
 }
 
 .shopping p {
@@ -78,4 +96,86 @@ nav ul {
 .brand-icons {
   display: flex;
   gap: 16px;
+}
+
+@media (max-width: 992px) {
+  .hero {
+    gap: 20px;
+  }
+  
+  .hero h1 {
+    font-size: 60px;
+    line-height: 70px;
+  }
+
+  .hero p {
+    max-width: 350px; 
+  }
+
+  .hero-content {
+    flex: 1;
+  }
+  .hero-image {
+    flex: 0.5;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    justify-content: center;
+  }
+  nav ul {
+    display: none;
+  }
+  nav button {
+    display: none;
+  }
+
+  .hero {
+    flex-direction: column;
+    height: auto;
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .hero-image {
+    order: -1;
+    max-width: 90%;
+    margin-bottom: 30px;
+  }
+  
+  .hero-content {
+    align-items: center;
+    gap: 24px;
+    flex: unset;
+  }
+
+  .hero h1 {
+    font-size: 48px;
+    line-height: 56px;
+  }
+  
+  .hero p {
+    max-width: 90%; 
+  }
+
+  .hero-btn {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-btn button {
+    font-size: 20px;
+    width: 90%;
+    max-width: 300px;
+  }
+  
+  .shopping {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+  }
 }
