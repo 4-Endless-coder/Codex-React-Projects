@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+
 import './App.css'
 import Nav from './components/Navigation/Nav'
 import ContactHeader from './components/ContactHeader/ContactHeader'

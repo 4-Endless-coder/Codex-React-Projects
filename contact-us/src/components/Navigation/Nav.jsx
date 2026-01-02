@@ -1,9 +1,10 @@
-import React from 'react'
+import styles from "./Nav.module.css"
+
 
 const Nav = () => {
   return (
      <div>
-        <nav>
+        <nav className={`${styles.navigation} container`}>
           <div className="logo" style={{width:'20px'}}>
             <img src="\assets\logo.svg" alt="logo" />
           </div>
