@@ -9,6 +9,11 @@ const App = () => {
   const [fillteredData, setFilteredData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedBtn, setSelectedBtn]= useState("all")
+
+  useEffect(()=>{
+
+  },[])
 
   useEffect(() => {
     const fetchFoodData = async () => {
@@ -28,7 +33,6 @@ const App = () => {
   }, []);
   const searchFood =(e)=>{
     const searchValue= e.target.value;
-    console.log(searchValue);
     
     if(searchValue == ""){
       fillteredData(null)
@@ -38,7 +42,33 @@ const App = () => {
    setFilteredData(filter);
   };
 
- 
+  const filterFood = (type) => {
+    if(type == "all") {
+      setFilteredData(data);
+      setSelectedBtn("all")
+      return
+    }
+    const filter =data?.filter((food) => 
+      food.type.toLowerCase().includes (type.toLowerCase())
+  );
+    setFilteredData(filter);
+    setSelectedBtn(type);
+  }
+
+  const filterBtns =[
+    {name:"All",
+    type: "all",
+    },
+    {name:"Breakfast",
+    type: "breakfast",
+    },
+    {name:"Lunch",
+    type: "lunch",
+    },
+    {name:"Dinner",
+    type: "dinner",
+    },
+  ]
 
   if (error) return <div>{error}</div>;
   if (loading) return <div>loading....</div>;
@@ -56,10 +86,15 @@ const App = () => {
           </div>
         </TopContainer>
         <FilterContainer>
-          <Button>All</Button>
-          <Button>Breakfast</Button>
-          <Button>Lunch</Button>
-          <Button>Dinner</Button>
+          {filterBtns.map((value) => (
+            <Button
+              isSelected={selectedBtn === value.type}
+              key={value.name}
+              onClick={() => filterFood(value.type)}
+            >
+              {value.name}
+            </Button>
+          ))}
         </FilterContainer>
       </Container>
       <SearchResult data={fillteredData} />
@@ -89,7 +124,15 @@ const TopContainer = styled.section`
       height: 40px;
       font-size: 16px;
       padding: 0 10px;
+      &::placeholder {
+        color: white;
+      }
     }
+  }
+
+  @media (0 < width < 600px) {
+    flex-direction: column;
+    height: 120px;
   }
 `;
 
@@ -101,7 +144,8 @@ const FilterContainer = styled.section`
 `;
 
 export const Button = styled.button`
-  background: #ff4343;
+ background: ${({ isSelected }) => (isSelected ? "#f22f2f" : "#ff4343")};
+  outline: 1px solid ${({ isSelected }) => (isSelected ? "white" : "#ff4343")};
   border-radius: 5px;
   padding: 6px 12px;
   border: none;
