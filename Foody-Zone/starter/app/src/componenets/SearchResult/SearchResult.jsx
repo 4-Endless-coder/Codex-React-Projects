@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { BASE_URL,Button } from "../../App";
+import { BASE_URL,Button,Container } from "../../App";
 
 const SearchResult = ({data}) => {
   return (
     <div>
       <FoodCardContainer>
-      <FoodCards>
+        <Container>
+          <FoodCards>
         {
             data?.map(({name, image, text, price})=>(
                 <Foodcard key={name}>
@@ -24,6 +25,7 @@ const SearchResult = ({data}) => {
                 
         }
       </FoodCards>
+        </Container>
     </FoodCardContainer>
     </div>
   )
