@@ -9,7 +9,14 @@ const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)());
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://foody-zone-peach.vercel.app"
+];
+app.use((0, cors_1.default)({
+    origin: allowedOrigins,
+    credentials: true
+}));
 app.use("/images", express_1.default.static(path_1.default.join(__dirname, "../public/images")));
 app.get("/", (req, res) => {
     console.log(path_1.default.join(__dirname, "../public"));
@@ -59,7 +66,9 @@ app.get("/", (req, res) => {
     ];
     res.json(foodData);
 });
-app.listen(9000, () => {
-    console.log("Server is running on port 9000");
+const PORT = process.env.PORT || 9000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
+exports.default = app;
 //# sourceMappingURL=index.js.map
