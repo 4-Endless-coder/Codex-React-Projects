@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   "http://localhost:5173",                     
-  "https://foody-zone-brown.vercel.app"        
+  "https://foody-zone-peach.vercel.app"        
 ];
 
 app.use(cors({
