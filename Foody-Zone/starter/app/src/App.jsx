@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SearchResult from "./componenets/SearchResult/SearchResult";
 
-export const BASE_URL = "http://localhost:9000";
+export const BASE_URL = "https://foody-zone-data-h1l3qkhya-4-endless-coders-projects.vercel.app/";
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -10,10 +10,6 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedBtn, setSelectedBtn]= useState("all")
-
-  useEffect(()=>{
-
-  },[])
 
   useEffect(() => {
     const fetchFoodData = async () => {
