@@ -8,8 +8,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const allowedOrigins = [
-  "http://localhost:5173",                 
-  "https://foody-zone-brown.vercel.app/" // ⚠️ TODO: Replace this with actual Vercel Frontend URL later
+  "http://localhost:5173",                     
+  "https://foody-zone-brown.vercel.app"        
 ];
 
 app.use(cors({
