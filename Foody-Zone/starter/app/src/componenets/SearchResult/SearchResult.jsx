@@ -65,8 +65,7 @@ const Foodcard = styled.div`
       rgba(255, 255, 255, 0) 100%
     );
 
-  background: url(.png),
-    radial-gradient(
+  background: radial-gradient(
       90.16% 143.01% at 15.32% 21.04%,
       rgba(165, 239, 255, 0.2) 0%,
       rgba(110, 191, 244, 0.0447917) 77.08%,
