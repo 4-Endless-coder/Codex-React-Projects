@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SearchResult from "./componenets/SearchResult/SearchResult";
 
-export const BASE_URL = "https://foody-zone-data-h1l3qkhya-4-endless-coders-projects.vercel.app/";
+export const BASE_URL = "https://foody-zone-data-h1l3qkhya-4-endless-coders-projects.vercel.app";
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -31,7 +31,7 @@ const App = () => {
     const searchValue= e.target.value;
     
     if(searchValue == ""){
-      fillteredData(null)
+      setFilteredData(data);
     }
     const filter =data?.filter((food) => food.name.toLowerCase().includes (searchValue.toLowerCase())
    );
