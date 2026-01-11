@@ -390,11 +390,14 @@ const FoodCard = styled.div`
   transition: all 0.3s ease;
   overflow: hidden;
   backdrop-filter: blur(10px);
+  isolation: isolate;
+  z-index: 1;
 
   &:hover {
     transform: translateY(-5px);
     border-color: rgba(255, 67, 67, 0.4);
     box-shadow: 0 8px 30px rgba(255, 67, 67, 0.2);
+    z-index: 10;
   }
 
   &:hover div:first-child {
@@ -404,18 +407,20 @@ const FoodCard = styled.div`
 
 const CardGlow = styled.div`
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
   background: radial-gradient(
     circle,
-    rgba(255, 67, 67, 0.1) 0%,
-    transparent 70%
+    rgba(255, 67, 67, 0.15) 0%,
+    transparent 60%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
+  z-index: 0;
 `;
 
 const CardImage = styled.div`
