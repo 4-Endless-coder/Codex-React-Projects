@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const BASE_URL = "https://foody-zone-data.vercel.app";
+const BASE_URL = "http://localhost:9000";
+// Change to "https://foody-zone-data.vercel.app" when deployed
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -20,7 +21,8 @@ const App = () => {
         setData(json);
         setFilteredData(json);
       } catch (error) {
-        setError("Unable to Fetch Data");
+        setError("Unable to fetch data from server. Please make sure the server is running.");
+        setLoading(false);
       }
     };
     fetchFoodData();
