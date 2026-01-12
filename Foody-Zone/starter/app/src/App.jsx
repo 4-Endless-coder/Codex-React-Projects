@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const BASE_URL = "http://localhost:9000";
-// Change to "https://foody-zone-data.vercel.app" when deployed
+const BASE_URL = "https://foody-zone-data.vercel.app";
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -115,7 +114,10 @@ const App = () => {
             <FoodCard key={name}>
               <CardGlow />
               <CardImage>
-                <img src={BASE_URL + image} alt={name} />
+                <img 
+                  src={image.startsWith('http') ? image : BASE_URL + image} 
+                  alt={name} 
+                />
               </CardImage>
               <CardContent>
                 <CardInfo>
