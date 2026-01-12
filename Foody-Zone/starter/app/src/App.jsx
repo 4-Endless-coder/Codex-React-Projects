@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { theme } from './styles/theme';
+import { theme } from "./styles/theme.js"; 
 import { useFoodData } from './hooks/useFoodData';
 import { useDebounce } from './hooks/useDebounce';
 import { useFoodFilter, useFilterState } from './hooks/useFoodFilter';
