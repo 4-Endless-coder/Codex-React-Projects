@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
-
-
+@theme {
+  /* Add custom variables here to use them as Tailwind classes */
+  --color-gray-dark: #323334;
+  --color-gray-medium: #5a5959;
+}
 
 body {
     background-color: #323334;
