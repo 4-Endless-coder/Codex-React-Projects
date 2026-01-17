@@ -1,6 +1,5 @@
-// src/App.tsx
 import { useState, useEffect } from 'react';
-import { Search, Plus, User, Mail, Phone, Edit2, Trash2, X } from 'lucide-react';
+import { Search, Plus, User, Mail, Phone, Edit2, Trash2, X, AlertCircle } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { 
   getFirestore, 
@@ -9,24 +8,24 @@ import {
   updateDoc, 
   deleteDoc, 
   doc, 
-  onSnapshot 
+  onSnapshot,
+  query,
+  orderBy,
+  Timestamp
 } from 'firebase/firestore';
 
-// Firebase configuration - YOUR EXISTING PROJECT
 const firebaseConfig = {
-  apiKey: "AIzaSyBDyW0PdUgGZcqc0s1W9jeTIXkN1xqOscM",
-  authDomain: "vite-contact-664fb.firebaseapp.com",
-  projectId: "vite-contact-664fb",
-  storageBucket: "vite-contact-664fb.firebasestorage.app",
-  messagingSenderId: "1094663249898",
-  appId: "1:1094663249898:web:4e569877a057bcda6edc93"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Types
 interface Contact {
   id: string;
   name: string;
@@ -37,88 +36,130 @@ interface Contact {
 const App = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [currentContact, setCurrentContact] = useState<Contact | null>(null);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+  const [saving, setSaving] = useState(false);
 
-  // Real-time Firebase listener
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'contacts'), (snapshot) => {
-      const contactsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Contact[];
-      setContacts(contactsData);
-      setLoading(false);
-    }, (error) => {
-      console.error('Error fetching contacts:', error);
-      setLoading(false);
-    });
+    const q = query(collection(db, 'contacts'), orderBy('name', 'asc'));
+    
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const contactsData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Contact[];
+        setContacts(contactsData);
+        setLoading(false);
+        setError('');
+      },
+      (err) => {
+        console.error('Firestore error:', err);
+        setError('Failed to load contacts. Please check your Firebase configuration.');
+        setLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
 
-  // Filter contacts based on search
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchTerm.toLowerCase())
+    contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    contact.phone.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Add new contact
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+
+    if (!formData.name.trim()) {
+      alert('Name is required');
+      return false;
+    }
+    if (!formData.email.trim() || !emailRegex.test(formData.email)) {
+      alert('Valid email is required');
+      return false;
+    }
+    if (!formData.phone.trim() || !phoneRegex.test(formData.phone)) {
+      alert('Valid phone number is required');
+      return false;
+    }
+    return true;
+  };
+
   const handleAddContact = () => {
     setCurrentContact(null);
     setFormData({ name: '', email: '', phone: '' });
     setShowModal(true);
   };
 
-  // Edit existing contact
   const handleEditContact = (contact: Contact) => {
     setCurrentContact(contact);
     setFormData({ name: contact.name, email: contact.email, phone: contact.phone });
     setShowModal(true);
   };
 
-  // Delete contact
   const handleDeleteContact = async (id: string) => {
-    try {
-      await deleteDoc(doc(db, 'contacts', id));
-    } catch (error) {
-      console.error('Error deleting contact:', error);
-      alert('Failed to delete contact');
-    }
-  };
-
-  // Save contact (add or update)
-  const handleSubmit = async () => {
-    if (!formData.name || !formData.email || !formData.phone) {
-      alert('Please fill in all fields');
+    if (!window.confirm('Are you sure you want to delete this contact?')) {
       return;
     }
 
     try {
+      await deleteDoc(doc(db, 'contacts', id));
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Failed to delete contact. Please try again.');
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    setSaving(true);
+    try {
       if (currentContact) {
-        // Update existing contact
-        await updateDoc(doc(db, 'contacts', currentContact.id), formData);
+        await updateDoc(doc(db, 'contacts', currentContact.id), {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          updatedAt: Timestamp.now()
+        });
       } else {
-        // Add new contact
-        await addDoc(collection(db, 'contacts'), formData);
+        await addDoc(collection(db, 'contacts'), {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          createdAt: Timestamp.now()
+        });
       }
       setShowModal(false);
       setFormData({ name: '', email: '', phone: '' });
     } catch (error) {
-      console.error('Error saving contact:', error);
-      alert('Failed to save contact');
+      console.error('Save error:', error);
+      alert('Failed to save contact. Please try again.');
+    } finally {
+      setSaving(false);
     }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setFormData({ name: '', email: '', phone: '' });
+    setCurrentContact(null);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="mx-auto max-w-4xl px-4 py-6">
-        {/* Navbar */}
+        
         <div className="mb-6 flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 p-4 shadow-lg">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white">
-            <svg width="24" height="24" viewBox="0 0 22 30" fill="none">
+            <svg width="24" height="30" viewBox="0 0 22 30" fill="none">
               <path d="M0 24.1878L8.76299 7.65059L4.99829 0.372466C4.6812 -0.222748 3.78889 -0.0722348 3.68496 0.59409L0 24.1878Z" fill="#FFC24A"/>
               <path d="M11.5388 12.853L14.3555 9.96834L11.538 4.58971C11.2705 4.08057 10.5238 4.07903 10.2592 4.58971L8.75378 7.4604L11.5387 12.853Z" fill="#F4BD62"/>
             </svg>
@@ -126,7 +167,13 @@ const App = () => {
           <h1 className="text-2xl font-bold text-white">Firebase Contact App</h1>
         </div>
 
-        {/* Search and Add Button */}
+        {error && (
+          <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-500/10 border border-red-500/50 p-4 text-red-400">
+            <AlertCircle className="h-5 w-5" />
+            <p>{error}</p>
+          </div>
+        )}
+
         <div className="mb-6 flex items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -146,13 +193,11 @@ const App = () => {
           </button>
         </div>
 
-        {/* Loading State */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="h-12 w-12 animate-spin rounded-full border-4 border-orange-500 border-t-transparent"></div>
           </div>
         ) : (
-          /* Contacts List */
           <div className="space-y-3">
             {filteredContacts.length === 0 ? (
               <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-8 text-center text-gray-400 backdrop-blur-sm">
@@ -190,14 +235,12 @@ const App = () => {
                     <button
                       onClick={() => handleEditContact(contact)}
                       className="rounded-lg bg-blue-500 p-2 text-white transition-all hover:bg-blue-600 active:scale-95"
-                      title="Edit contact"
                     >
                       <Edit2 className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => handleDeleteContact(contact.id)}
                       className="rounded-lg bg-red-500 p-2 text-white transition-all hover:bg-red-600 active:scale-95"
-                      title="Delete contact"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -209,7 +252,6 @@ const App = () => {
         )}
       </div>
 
-      {/* Add/Edit Contact Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-xl bg-gray-800 p-6 shadow-2xl">
@@ -218,7 +260,7 @@ const App = () => {
                 {currentContact ? 'Edit Contact' : 'Add New Contact'}
               </h2>
               <button
-                onClick={() => setShowModal(false)}
+                onClick={handleModalClose}
                 className="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white"
               >
                 <X className="h-5 w-5" />
@@ -263,16 +305,18 @@ const App = () => {
               </div>
               <div className="flex gap-3 pt-2">
                 <button
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white transition-colors hover:bg-gray-700"
+                  onClick={handleModalClose}
+                  disabled={saving}
+                  className="flex-1 rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white transition-colors hover:bg-gray-700 disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="flex-1 rounded-lg bg-orange-500 px-4 py-2 text-white transition-all hover:bg-orange-600 active:scale-95"
+                  disabled={saving}
+                  className="flex-1 rounded-lg bg-orange-500 px-4 py-2 text-white transition-all hover:bg-orange-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {currentContact ? 'Update Contact' : 'Add Contact'}
+                  {saving ? 'Saving...' : currentContact ? 'Update Contact' : 'Add Contact'}
                 </button>
               </div>
             </div>
