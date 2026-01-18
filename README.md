@@ -17,8 +17,8 @@
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite Badge" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS Badge" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript Badge" />
-  <img src="https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white" alt="Jest Badge" />
-  <img src="https://img.shields.io/badge/Bun-FBF0DF?style=for-the-badge&logo=bun&logoColor=black" alt="Bun Badge" />
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase Badge" />
+  <img src="https://img.shields.io/badge/Styled_Components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" alt="Styled Components Badge" />
 </p>
 
 </div>
@@ -43,6 +43,8 @@ Below is a detailed breakdown of the applications contained within this reposito
 
 | Project | Type | Tech Stack | Key Features |
 | :--- | :--- | :--- | :--- |
+| **Firebase Contact App** | 📇 CRUD App | ![React](https://img.shields.io/badge/-React-61DAFB?style=flat&logo=react&logoColor=black) ![TS](https://img.shields.io/badge/-TS-3178C6?style=flat&logo=typescript&logoColor=white) ![Firebase](https://img.shields.io/badge/-Firebase-FFCA28?style=flat&logo=firebase&logoColor=black) | • **Real-time Database:** CRUD operations using Firebase Firestore.<br>• **Modal System:** Custom hooks for managing modal states.<br>• **Search Functionality:** Real-time filtering of contacts.<br>• **Modern UI:** Built with Tailwind CSS & Lucide Icons. |
+| **Foody Zone** | 🥗 App | ![React](https://img.shields.io/badge/-React-61DAFB?style=flat&logo=react&logoColor=black) ![Styled Components](https://img.shields.io/badge/-Styled_Components-DB7093?style=flat&logo=styled-components&logoColor=white) | • **Dynamic Filtering:** Filter food items by category (Breakfast, Lunch, Dinner).<br>• **Search:** Instant search functionality.<br>• **Styled Components:** Component-level dynamic styling.<br>• **Responsive Grid:** Adaptive layout for food cards. |
 | **Odisha SGPA/CGPA Calc** | 🧮 Utility | ![React](https://img.shields.io/badge/-React-61DAFB?style=flat&logo=react&logoColor=black) ![TS](https://img.shields.io/badge/-TS-3178C6?style=flat&logo=typescript&logoColor=white) ![Tailwind](https://img.shields.io/badge/-Tailwind-38B2AC?style=flat&logo=tailwind-css&logoColor=white) | • **Complex Logic:** University-specific grade calculations.<br>• **Modern UI:** Built with Tailwind CSS.<br>• **Type Safe:** Fully typed with TypeScript.<br>• **State:** Dynamic form inputs for subjects. |
 | **Little Lemon Restaurant** | 🍽️ Capstone | ![React](https://img.shields.io/badge/-React-61DAFB?style=flat&logo=react&logoColor=black) ![Jest](https://img.shields.io/badge/-Jest-C21325?style=flat&logo=jest&logoColor=white) ![Router](https://img.shields.io/badge/-Router-CA4245?style=flat&logo=react-router&logoColor=white) | • **Booking System:** Form with validation & local storage.<br>• **Unit Testing:** Jest & React Testing Library integration.<br>• **Routing:** Multi-page navigation setup.<br>• **Accessibility:** ARIA compliant components. |
 | **Brand Page** | 👟 Landing | ![React](https://img.shields.io/badge/-React-61DAFB?style=flat&logo=react&logoColor=black) ![CSS](https://img.shields.io/badge/-CSS3-1572B6?style=flat&logo=css3&logoColor=white) | • **Hero Section:** Pixel-perfect brand landing page.<br>• **Component Design:** Clean separation of UI concerns.<br>• **Asset Management:** Efficient handling of SVG assets. |
@@ -54,10 +56,11 @@ Below is a detailed breakdown of the applications contained within this reposito
 
 While individual projects may vary, the core technology ecosystem across this repository includes:
 
-* **Frontend Library:** React 18+
+* **Frontend Library:** React 18+ / React 19
 * **Build Tool:** Vite (for lightning-fast HMR)
 * **Language:** JavaScript (ES6+) & TypeScript
-* **Styling:** Tailwind CSS, CSS Modules, Vanilla CSS
+* **Styling:** Tailwind CSS, Styled Components, CSS Modules
+* **Backend/BaaS:** Firebase (Firestore)
 * **Testing:** Jest, React Testing Library
 * **Runtime/Package Manager:** Node.js, Bun, NPM
 
@@ -79,7 +82,106 @@ These projects are built on standard web technologies and are platform-agnostic.
 
 ### File Tree Of: Codex-React-Projects
 
+
+
 ```
+├── 📁 Firebase
+│   ├── 📁 .vite
+│   │   └── 📁 deps
+│   │       ├── ⚙️ _metadata.json
+│   │       └── ⚙️ package.json
+│   ├── 📁 public
+│   │   ├── 🖼️ Hands Contact.svg
+│   │   └── 🖼️ firebase.svg
+│   ├── 📁 src
+│   │   ├── 📁 assets
+│   │   │   └── 🖼️ react.svg
+│   │   ├── 📁 components
+│   │   │   ├── 📄 ContactCard.tsx
+│   │   │   ├── 📄 ContactModal.tsx
+│   │   │   ├── 📄 Navbar.tsx
+│   │   │   └── 📄 SearchBar.tsx
+│   │   ├── 📁 config
+│   │   │   └── 📄 firebase.ts
+│   │   ├── 📁 hooks
+│   │   │   └── 📄 useContacts.ts
+│   │   ├── 📁 types
+│   │   │   └── 📄 contact.ts
+│   │   ├── 🎨 App.css
+│   │   ├── 📄 App.tsx
+│   │   ├── 🎨 index.css
+│   │   └── 📄 main.tsx
+│   ├── ⚙️ .gitignore
+│   ├── ⚙️ .prettierrc
+│   ├── 📝 README.md
+│   ├── 📄 eslint.config.js
+│   ├── 🌐 index.html
+│   ├── ⚙️ package-lock.json
+│   ├── ⚙️ package.json
+│   ├── 📄 prettier.config.js
+│   ├── ⚙️ tsconfig.app.json
+│   ├── ⚙️ tsconfig.json
+│   ├── ⚙️ tsconfig.node.json
+│   └── 📄 vite.config.ts
+├── 📁 Foody-Zone
+│   └── 📁 starter
+│       ├── 📁 app
+│       │   ├── 📁 public
+│       │   │   ├── 🖼️ Foody_Zone_logo.svg
+│       │   │   └── 🖼️ bg.png
+│       │   ├── 📁 src
+│       │   │   ├── 📁 components
+│       │   │   │   ├── 📁 FilterButtons
+│       │   │   │   │   ├── 📄 FilterButtons.jsx
+│       │   │   │   │   ├── 📄 FilterButtons.styles.js
+│       │   │   │   │   └── 📄 index.js
+│       │   │   │   ├── 📁 FoodCard
+│       │   │   │   │   ├── 📄 FoodCard.jsx
+│       │   │   │   │   ├── 📄 FoodCard.styles.js
+│       │   │   │   │   └── 📄 index.js
+│       │   │   │   ├── 📁 FoodGrid
+│       │   │   │   │   ├── 📄 FoodGrid.jsx
+│       │   │   │   │   ├── 📄 FoodGrid.styles.js
+│       │   │   │   │   └── 📄 index.js
+│       │   │   │   ├── 📁 NavBar
+│       │   │   │   │   ├── 📄 Navbar.jsx
+│       │   │   │   │   ├── 📄 Navbar.styles.js
+│       │   │   │   │   └── 📄 index.js
+│       │   │   │   └── 📁 SearchResult
+│       │   │   │       └── 📄 SearchResult.jsx
+│       │   │   ├── 📁 hooks
+│       │   │   │   ├── 📄 index.js
+│       │   │   │   ├── 📄 useDebounce.js
+│       │   │   │   ├── 📄 useFoodData.js
+│       │   │   │   └── 📄 useFoodFilter.js
+│       │   │   ├── 📁 styles
+│       │   │   │   ├── 📄 common.styles.js
+│       │   │   │   └── 📄 theme.js
+│       │   │   ├── 📄 App.jsx
+│       │   │   └── 📄 main.jsx
+│       │   ├── ⚙️ .eslintrc.cjs
+│       │   ├── ⚙️ .gitignore
+│       │   ├── 🌐 index.html
+│       │   ├── ⚙️ package-lock.json
+│       │   ├── ⚙️ package.json
+│       │   ├── 📄 vite.config.js
+│       │   └── 📦 yarn.lock
+│       ├── 📁 server
+│       │   ├── 📁 public
+│       │   │   └── 📁 images
+│       │   │       ├── 🖼️ burger.png
+│       │   │       ├── 🖼️ cake.png
+│       │   │       ├── 🖼️ chicken.png
+│       │   │       ├── 🖼️ egg.png
+│       │   │       ├── 🖼️ pancake.png
+│       │   │       └── 🖼️ ramen.png
+│       │   ├── 📁 src
+│       │   │   ├── 📄 index.ts
+│       │   │   └── ⚙️ vercel.json
+│       │   ├── ⚙️ .gitignore
+│       │   ├── ⚙️ package.json
+│       │   └── ⚙️ tsconfig.json
+│       └── 📝 Readme.md
 ├── 📁 brand-page
 │   ├── 📁 public
 │   │   ├── 📁 assets
@@ -109,14 +211,15 @@ These projects are built on standard web technologies and are platform-agnostic.
 │   ├── 📁 public
 │   │   ├── 📁 assets
 │   │   │   ├── 🖼️ Service_24_7.svg
-│   │   │   ├── 🖼️ ic_baseline-phone.svg
-│   │   │   ├── 🖼️ ic_outline-message.svg
 │   │   │   └── 🖼️ logo.svg
 │   │   └── 🖼️ vite.svg
 │   ├── 📁 src
 │   │   ├── 📁 assets
 │   │   │   └── 🖼️ react.svg
 │   │   ├── 📁 components
+│   │   │   ├── 📁 Button
+│   │   │   │   ├── 📄 Button.jsx
+│   │   │   │   └── 🎨 Button.module.css
 │   │   │   ├── 📁 ContactForm
 │   │   │   │   ├── 🎨 Contact.module.css
 │   │   │   │   └── 📄 ContactForm.jsx
@@ -204,7 +307,6 @@ These projects are built on standard web technologies and are platform-agnostic.
 │   │   ├── 🖼️ preview-card.webp
 │   │   └── 📄 robots.txt
 │   ├── 📁 src
-│   │   ├── 📁 assets
 │   │   ├── 📁 components
 │   │   │   ├── 📄 CGPACalculator.jsx
 │   │   │   ├── 📄 GradingTable.jsx
@@ -232,9 +334,9 @@ These projects are built on standard web technologies and are platform-agnostic.
 │   ├── ⚙️ tsconfig.json
 │   ├── ⚙️ tsconfig.node.json
 │   └── 📄 vite.config.js
-└── 📝 README.md
+├── 📝 README.md
+└── 📝 readme2.md
 ```
-
 ---
 
 ## 🏁 Getting Started
@@ -254,26 +356,33 @@ Since this is a collection of projects, you will need to navigate to the specifi
 
 2.  **Choose a Project & Install Dependencies:**
 
-    * **For `odisha-sgpa-cgpa-calculation` (Uses Bun/TypeScript):**
+    * **For `Firebase` (Contact App):**
+        ```bash
+        cd Firebase
+        npm install
+        npm run dev
+        ```
+
+    * **For `Foody-Zone`:**
+        ```bash
+        cd Foody-Zone/starter/app
+        npm install
+        npm run dev
+        ```
+
+    * **For `odisha-sgpa-cgpa-calculation`:**
         ```bash
         cd odisha-sgpa-cgpa-calculation
         bun install  # or npm install
-        bun run dev  # or npm run dev
+        bun run dev
         ```
 
-    * **For `little_lemon_restaurants` (Uses Jest/NPM):**
+    * **For `little_lemon_restaurants`:**
         ```bash
         cd little_lemon_restaurants
         npm install
-        npm run dev  # To start app
-        npm test     # To run test suite
-        ```
-
-    * **For `brand-page` or `contact-us`:**
-        ```bash
-        cd brand-page  # or cd contact-us
-        npm install
         npm run dev
+        npm test
         ```
 
 3.  **Explore More:**
@@ -282,7 +391,7 @@ Since this is a collection of projects, you will need to navigate to the specifi
     <br/>
     <div align="center">
       <a href="https://asheshdash.vercel.app/" target="_blank">
-       <img src="https://img.shields.io/badge/Visit_Portfolio-2563EB?  style=for-the-badge&logo=vercel&logoColor=white" alt="Visit Portfolio" />
+       <img src="https://img.shields.io/badge/Visit_Portfolio-2563EB?style=for-the-badge&logo=vercel&logoColor=white" alt="Visit Portfolio" />
       </a>
     </div>
 
